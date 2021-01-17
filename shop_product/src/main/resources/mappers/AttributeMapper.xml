@@ -5,10 +5,19 @@
 
 <mapper namespace="com.fh.mapper.AttributeDao">
     <select id="queryDataCount" parameterType="com.fh.model.vo.PinPaiData" resultType="java.lang.Integer">
-    select count(*) from shop_shuxing;
+    select count(*) from shop_shuxing att LEFT JOIN shop_type t on att.typeId=t.id where 1=1
+        <if test="name!=null and name!=''">
+            and att.nameCH like concat('%',#{name},'%')
+        </if>
     </select>
     <select id="queryAttributeData" resultType="com.fh.model.po.Attribute"  parameterType="com.fh.model.vo.PinPaiData">
-        select * from  shop_shuxing where isDel=0  limit ${size*(currPage-1)},#{size}
+          SELECT att.id,att.`name`,att.nameCH,t.`name` as typeName,att.isSKU,att.type,att.createDate,att.updateDate
+          from shop_shuxing att LEFT JOIN shop_type t on att.typeId=t.id
+          where att.isDel=0
+        <if test="name!=null and name!=''">
+            and att.nameCH like concat('%',#{name},'%')
+        </if>
+          limit ${size*(currPage-1)},#{size}
     </select>
     <insert id="addAttribute" parameterType="com.fh.model.po.Attribute">
      insert  into shop_shuxing (name,nameCH,typeId,type,isSKU,isDel,createDate,author) value
