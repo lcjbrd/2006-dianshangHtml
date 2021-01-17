@@ -13,4 +13,6 @@ public interface AttVMapper {
     List<AttValue> queryAttV(AttValueVo vo);
 
     void addAttv(AttValue attValue);
+
+    void updateAttv(AttValue attValue);
 }

@@ -32,11 +32,11 @@ public class AttValue {
         this.nameCH = nameCH;
     }
 
-    public Integer getIsDel() {
+    public int getIsDel() {
         return isDel;
     }
 
-    public void setIsDel(Integer isDel) {
+    public void setIsDel(int isDel) {
         this.isDel = isDel;
     }
 

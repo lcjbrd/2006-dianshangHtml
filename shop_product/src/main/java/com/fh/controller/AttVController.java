@@ -34,4 +34,10 @@ public class AttVController {
         return ResultData.success("");
     }
 
+    @PostMapping("update")
+    public ResultData updateAttv(AttValue attValue){
+        vService.updateAttv(attValue);
+        return ResultData.success("");
+    }
+
 }

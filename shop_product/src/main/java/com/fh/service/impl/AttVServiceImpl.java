@@ -30,4 +30,9 @@ public class AttVServiceImpl implements AttVService {
     public void addAttv(AttValue attValue) {
         vMapper.addAttv(attValue);
     }
+
+    @Override
+    public void updateAttv(AttValue attValue) {
+        vMapper.updateAttv(attValue);
+    }
 }

@@ -11,7 +11,7 @@
         </if>
     </select>
     <select id="queryAttV" resultType="com.fh.model.po.AttValue"  parameterType="com.fh.model.vo.PinPaiData">
-        select att.nameCH as name,v.nameCh from shop_attr_value att LEFT JOIN shop_attr_value v on att.id=v.attid
+        select att.name,att.nameCH from shop_attr_value att LEFT JOIN shop_attr_value v on att.id=v.attid
           where att.isDel=0
         <if test="name!=null and name!=''">
             and att.nameCH like concat('%',#{name},'%')
@@ -23,11 +23,8 @@
      insert  into shop_attr_value (name,nameCH,isDel,attid) value (#{name},#{nameCH},#{isDel},#{attid})
     </insert>
 
-    <!--  <update id="updateAttValue" parameterType="com.fh.model.po.AttValue">
-         update shop_attr_value set name=#{name},nameCH=#{nameCH},typeId=#{typeId},type=#{type},isSKU=#{isSKU},
-         isDel=#{isDel},updateDate=#{updateDate},author='11' where id=#{id}
+    <update id="updateAttv" parameterType="com.fh.model.po.AttValue">
+         update shop_attr_value set name=#{name},nameCH=#{nameCH},isDel=#{isDel},attid=#{attid} where id=#{id}
      </update>
-     <update id="deleteAttValueById" parameterType="java.lang.Integer">
-         update shop_attr_value set isDel=1 where id=#{id}
-     </update>-->
+
 </mapper>
