@@ -25,4 +25,9 @@ public class AttVServiceImpl implements AttVService {
         rs.put("list",list);
         return rs;
     }
+
+    @Override
+    public void addAttv(AttValue attValue) {
+        vMapper.addAttv(attValue);
+    }
 }

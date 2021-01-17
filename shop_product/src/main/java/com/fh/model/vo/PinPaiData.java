@@ -7,6 +7,7 @@ public class PinPaiData {
     private String name;
 
 
+
     public Integer getCurrPage() {
         return currPage;
     }

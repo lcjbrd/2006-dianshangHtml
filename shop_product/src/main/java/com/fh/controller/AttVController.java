@@ -1,13 +1,11 @@
 package com.fh.controller;
 
+import com.fh.model.po.AttValue;
 import com.fh.model.vo.AttValueVo;
 import com.fh.model.vo.ResultData;
 import com.fh.service.AttVService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -28,6 +26,12 @@ public class AttVController {
         }
         Map list= vService.queryAttV(vo);
         return ResultData.success(list);
+    }
+
+    @PostMapping("add")
+    public ResultData addAttv(AttValue attValue){
+        vService.addAttv(attValue);
+        return ResultData.success("");
     }
 
 }
