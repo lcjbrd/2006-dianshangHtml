@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.*;
 
+
 @Service
 public class TypeServiceImpl implements TypeService {
     @Resource
@@ -34,8 +35,6 @@ public class TypeServiceImpl implements TypeService {
     public ResultData addType(ProductType productType) {
         productType.setCreateDate(new Date());
         int insertNum =typeMapper.addType(productType);
-        System.out.println("1111111111111");
-        System.out.println(productType.getId());
         return ResultData.success(productType.getId());
     }
 

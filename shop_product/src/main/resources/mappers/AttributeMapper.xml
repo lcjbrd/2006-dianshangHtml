@@ -8,11 +8,11 @@
     select count(*) from shop_shuxing;
     </select>
     <select id="queryAttributeData" resultType="com.fh.model.po.Attribute"  parameterType="com.fh.model.vo.PinPaiData">
-        select * from  shop_shuxing  limit ${size*(currPage-1)},#{size}
+        select * from  shop_shuxing where isDel=0  limit ${size*(currPage-1)},#{size}
     </select>
     <insert id="addAttribute" parameterType="com.fh.model.po.Attribute">
      insert  into shop_shuxing (name,nameCH,typeId,type,isSKU,isDel,createDate,author) value
-     (#{name},#{nameCH},#{typeId},#{type},#{isSKU},0,#{createDate},'11')
+     (#{name},#{nameCH},#{typeId},#{type},#{isSKU},#{isDel},#{createDate},#{author})
     </insert>
     <update id="updateAttribute" parameterType="com.fh.model.po.Attribute">
         update shop_shuxing set name=#{name},nameCH=#{nameCH},typeId=#{typeId},type=#{type},isSKU=#{isSKU},

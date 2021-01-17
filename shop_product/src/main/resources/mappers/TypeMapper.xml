@@ -5,7 +5,7 @@
 
 <mapper namespace="com.fh.mapper.TypeMapper">
       <select id="query" resultType="java.util.Map">
-          select * from shop_type where isDel=0;
+          select id,name,pid,isDel from shop_type where isDel=0;
       </select>
 
       <insert id="addType" parameterType="com.fh.model.po.ProductType" keyProperty="id" useGeneratedKeys="true">
@@ -13,7 +13,7 @@
       </insert>
 
     <update id="updateType" parameterType="com.fh.model.po.ProductType">
-         update shop_type set name=#{name},pid=#{id},isDel=#{isDel},updateDate=#{updateDate} where id=#{id}
+         update shop_type set name=#{name},isDel=#{isDel},updateDate=#{updateDate} where id=#{id}
     </update>
 
     <update id="delType" parameterType="java.lang.Integer">

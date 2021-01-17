@@ -16,13 +16,19 @@ public class BrandController {
    @Autowired
     private BrandService brandService;
 
-    @GetMapping
+    @GetMapping("getData")
     public ResultData queryBrand(BrandVo vo){
+        if (vo.getSize()==null){
+            ResultData.error(400,"数据不合法");
+        }
+        if (vo.getCurrPage()==null){
+            ResultData.error(400,"数据不合法");
+        }
        Map list =  brandService.queryBrand(vo);
          return ResultData.success(list);
    }
 
-   @PostMapping
+   @PostMapping("add")
     private ResultData addBrand(Brand brand){
         brandService.addBrand(brand);
        return ResultData.success("");
