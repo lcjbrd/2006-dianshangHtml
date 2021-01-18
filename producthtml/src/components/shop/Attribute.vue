@@ -20,10 +20,17 @@
         :data="attribute"
         height="250"
         style="width: 100%"
-        @selection-change="handleSelectionChange">
+        @selection-change="handleSelectionChange"
+        @row-click="getDetails">
         <el-table-column
           type="selection"
           width="55">
+        </el-table-column>
+
+        <el-table-column
+          prop="id"
+          width="100"
+          label="序号">
         </el-table-column>
 
         <el-table-column
@@ -79,7 +86,7 @@
           width="200">
           <template slot-scope="scope">
             <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-            <el-button @click="ShowValueTable=true" type="text" size="small">属性值维护</el-button>
+            <el-button @click="attValue(scope.row)" type="text" size="small">属性值维护</el-button>
           </template>
         </el-table-column>
 
@@ -202,17 +209,67 @@
 
       <!--  属性值的维护数据  -->
 
+
       <el-dialog title="属性值信息" :visible.sync="ShowValueTable">
-        <el-table :data="gridData">
-          <el-table-column property="date" label="属性" width="150"></el-table-column>
-          <el-table-column property="name" label="属性值" width="200"></el-table-column>
-          <el-table-column property="address" label="地址"></el-table-column>
+        <el-button type="success" @click="addValue=true">新增</el-button>
+        <el-table :data="attrValue">
+          <el-table-column property="name" label="属性" width="150"></el-table-column>
+          <el-table-column property="nameCH" label="属性值" width="200"></el-table-column>
+
+          <el-table-column label="操作">
+            <template slot-scope="scope">
+              <el-button
+                size="mini"
+                @click="huixian(scope.$index, scope.row)">编辑</el-button>
+            </template>
+          </el-table-column>
         </el-table>
+      </el-dialog>
+
+      <el-dialog :title="valueTitle" :visible.sync="addValue">
+
+        <el-form :model="addAttValue" ref="addAttValue"  label-width="80px">
+
+          <el-form-item label="名称" prop="name">
+            <el-input v-model="addAttValue.name" autocomplete="off" ></el-input>
+          </el-form-item>
+
+          <el-form-item label="名称" prop="nameCH">
+            <el-input v-model="addAttValue.nameCH" autocomplete="off" ></el-input>
+          </el-form-item>
+
+        </el-form>
+
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="addValue = false">取 消</el-button>
+          <el-button type="primary" @click="addAttFrom">确 定</el-button>
+        </div>
       </el-dialog>
 
 
 
+      <el-dialog :title="valueTitle" :visible.sync="updateValue">
 
+        <el-form :model="updateAttValue" ref="updateAttValue"  label-width="80px">
+
+          <el-form-item label="名称" prop="name">
+            <el-input v-model="updateAttValue.name" autocomplete="off" ></el-input>
+          </el-form-item>
+
+          <el-form-item label="名称" prop="nameCH">
+            <el-input v-model="updateAttValue.nameCH" autocomplete="off" ></el-input>
+          </el-form-item>
+
+          <el-form-item label="属性id" prop="attid">
+            <el-input v-model="updateAttValue.attid" autocomplete="off" ></el-input>
+          </el-form-item>
+        </el-form>
+
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="updateValue = false">取 消</el-button>
+          <el-button type="primary" @click="updateAttFrom">确 定</el-button>
+        </div>
+      </el-dialog>
 
     </div>
 </template>
@@ -227,6 +284,8 @@
                     size:4,
                     currPage:1,
                     name:'',
+                    id:'',
+
                 },
                 count:0,
                 pageSizes:[2,4,6,8],
@@ -258,7 +317,24 @@
                 },
 
 
-                ShowValueTable:false
+                ShowValueTable:false,
+
+
+                attrValue:[],
+                addValue:false,
+                valueTitle:'',
+                addAttValue:{
+                    name:'',
+                    nameCH:'',
+                    attid:'',
+                },
+                updateValue:false,
+                updateAttValue:{
+                    id:'',
+                    name:'',
+                    nameCH:'',
+                    attid:'',
+                },
             }
         },
         methods: {
@@ -304,11 +380,12 @@
 
             handleEdit(index,row){
                 //关闭弹框
-                console.log(row)
+                console.log(row.id)
                 this.updateAttriFrom=row;
                 this.updateAttriFrom.typeId=row.typeId;
                 this.updateFormFlag=true;
                 this.queryAttribute(1);
+
             },
             updateForm:function(){
                 this.$ajax.post("http://localhost:8080/api/attribute/updateAttribute",this.$qs.stringify(this.updateAttriFrom)).then(res=>{
@@ -317,8 +394,47 @@
                     this.queryAttribute(1);
                 }).catch(err=>console.log(err));
             },
-
-
+            getDetails(row){
+                this.queryAttValue(row.id);
+            },
+            attValue(row){
+                this.ShowValueTable=true;
+                this.valueTitle=row.nameCH+"信息"
+                this.addAttValue.attid=row.id;
+            },
+            queryAttValue(id){
+                var aa=this;
+                this.$ajax.get("http://localhost:8080/api/value/getData?id="+id).then(function (res) {
+                    console.log(res)
+                    /*获取数据*/
+                    aa.attrValue=res.data.data.list;
+                    /*获取总数据*/
+                    aa.count=res.data.data.count;
+                }).catch(function (res) {
+                    alert("处理异常")
+                })
+            },
+            addAttFrom(){
+                this.$ajax.post("http://localhost:8080/api/value/add",this.$qs.stringify(this.addAttValue)).then(res=>{
+                    //关闭弹框
+                    this.addValue=false;
+                    this.queryAttValue(1);
+                }).catch(err=>console.log(err));
+            },
+            huixian(index,row){
+                //关闭弹框
+                console.log(row)
+                this.updateAttValue=row
+                this.updateValue=true
+                this.queryAttValue(1);
+            },
+            updateAttFrom(){
+                this.$ajax.post("http://localhost:8080/api/value/update",this.$qs.stringify(this.updateAttValue)).then(res=>{
+                    //关闭弹框
+                    this.updateValue=false;
+                    this.queryAttValue(1);
+                }).catch(err=>console.log(err));
+            }
 
         },
 
