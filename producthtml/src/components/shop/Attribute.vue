@@ -86,7 +86,7 @@
           width="200">
           <template slot-scope="scope">
             <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-            <el-button @click="attValue(scope.row)" type="text" size="small">属性值维护</el-button>
+            <el-button v-if="scope.row.type!=3"  @click="attValue(scope.row)" type="text" size="small">属性值维护</el-button>
           </template>
         </el-table-column>
 
