@@ -69,17 +69,17 @@ export default {
                         {
                             icon: 'el-icon-goods',
                             index: 'product',
-                            title: '🛥商品列表'
+                            title: '🪂商品列表'
                         },
                         {
                             icon: 'el-icon-edit-outline',
                             index: 'productAdd',
-                            title: '⛴商品维护'
+                            title: '🛸商品维护'
                         },
                         {
                             icon: 'el-icon-price-tag',
                             index: 'brand',
-                            title: '🛳品牌管理'
+                            title: '🌀品牌管理'
                         },
                         {
                             icon: 'el-icon-lx-sort',

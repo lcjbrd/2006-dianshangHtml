@@ -4,8 +4,8 @@
       <div id="searchDiv">
         <el-form :inline="true" :model="param" class="demo-form-inline">
 
-          <el-form-item label="名称">
-            <el-input v-model="param.name" placeholder="名称"></el-input>
+          <el-form-item label="属性名称">
+            <el-input v-model="param.name" placeholder="属性名称"></el-input>
           </el-form-item>
 
           <el-form-item>
@@ -21,7 +21,7 @@
         height="250"
         style="width: 100%"
         @selection-change="handleSelectionChange"
-        @row-click="getDetails">
+        >
         <el-table-column
           type="selection"
           width="55">
@@ -260,9 +260,7 @@
             <el-input v-model="updateAttValue.nameCH" autocomplete="off" ></el-input>
           </el-form-item>
 
-          <el-form-item label="属性id" prop="attid">
-            <el-input v-model="updateAttValue.attid" autocomplete="off" ></el-input>
-          </el-form-item>
+
         </el-form>
 
         <div slot="footer" class="dialog-footer">
@@ -285,7 +283,6 @@
                     currPage:1,
                     name:'',
                     id:'',
-
                 },
                 count:0,
                 pageSizes:[2,4,6,8],
@@ -344,7 +341,6 @@
             queryAttribute(currPage){
                 var aa=this;
                 this.$ajax.get("http://localhost:8080/api/attribute/queryAttributeData?"+this.$qs.stringify(this.param)).then(function (res) {
-                    console.log(res)
                     /*获取数据*/
                     aa.attribute=res.data.data.list;
                     /*获取总数据*/
@@ -384,7 +380,7 @@
                 this.updateAttriFrom=row;
                 this.updateAttriFrom.typeId=row.typeId;
                 this.updateFormFlag=true;
-                this.queryAttribute(1);
+                this.queryAttribute();
 
             },
             updateForm:function(){
@@ -394,10 +390,8 @@
                     this.queryAttribute(1);
                 }).catch(err=>console.log(err));
             },
-            getDetails(row){
-                this.queryAttValue(row.id);
-            },
             attValue(row){
+                this.queryAttValue(row.id);
                 this.ShowValueTable=true;
                 this.valueTitle=row.nameCH+"信息"
                 this.addAttValue.attid=row.id;
@@ -409,7 +403,6 @@
                     /*获取数据*/
                     aa.attrValue=res.data.data.list;
                     /*获取总数据*/
-                    aa.count=res.data.data.count;
                 }).catch(function (res) {
                     alert("处理异常")
                 })
