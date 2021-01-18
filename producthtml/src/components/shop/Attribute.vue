@@ -339,11 +339,14 @@
                     isDel:'',
                     typeId:-1
                 },
+                ajaxTypeData:[],
+                typeName:"",
                 types:[
-                    {"id":4,name:"分类/电子产品/手机"},
+           /*         {"id":4,name:"分类/电子产品/手机"},
                     {"id":5,name:"分类/电子产品/电脑"},
                     {"id":11,name:"分类/服装/雨衣"},
-                    {"id":19,name:"分类/服装/羽绒服"}],
+                    {"id":19,name:"分类/服装/羽绒服"}*/
+                    ],
 
 
                 updateFormFlag:false,
@@ -404,6 +407,68 @@
                 this.queryAttribute();
             },
 
+            formaterTypeData:function(){
+
+                this.$ajax.get("http://localhost:8080/api/value/type").then(res=>{
+                    console.log(res)
+                    // [{id:1,"name":"",pid:2},{}]
+                    this.ajaxTypeData=res.data.data.list;
+                    //{"id":7,name:"分类/电子产品/手机"},
+                    //先找到子节点的数据   this.types;
+                    this.getChildrenType();
+                    //debugger;
+                    //遍历所有的子节点
+                    for (let i = 0; i <this.types.length ; i++) {
+                        this.typeName=""; // 全局变量   临时存 层级名称
+                        //处理子节点的name属性
+                        this.chandleName(this.types[i]);
+                        //   a/b/c/f/d/e
+                        //给name重新赋值
+                        this.types[i].name=this.typeName.split("/").reverse().join("/").substr(0,this.typeName.length-1);
+                    }
+
+                })
+            }, //给我一个节点  得到层级name
+            chandleName:function(node){
+                if(node.pid!=0){ //临界值
+                    this.typeName+="/"+node.name;
+                    //上级节点
+                    for (let i = 0; i <this.ajaxTypeData.length ; i++) {
+                        if(node.pid==this.ajaxTypeData[i].id){
+                            this.chandleName(this.ajaxTypeData[i]);
+                            break;
+                        }
+                    }
+
+                }else{
+                    this.typeName+="/"+node.name;
+                }
+            },
+            //得到types的数据      遍历所有ajaxtypedata
+            getChildrenType:function(){
+                //遍历所有的节点数据
+                for (let i = 0; i <this.ajaxTypeData.length ; i++) {
+                    let  node=this.ajaxTypeData[i];
+                    this.isChildrenNode(node);
+                }
+            },
+            isChildrenNode:function(node){
+                let rs=true; //标示
+                for (let i = 0; i <this.ajaxTypeData.length ; i++) {
+                    if(node.id==this.ajaxTypeData[i].pid){
+                        rs=false;
+                        break;
+                    }
+                }
+                if(rs==true){
+                    this.types.push(node);
+                }
+            },
+
+
+
+
+
 
             addForm:function(){
                 //取得验证结果
@@ -424,7 +489,7 @@
 
             handleEdit(index,row){
                 //关闭弹框
-                console.log(row.id)
+                console.log(row)
                 this.updateAttriFrom=row;
                 this.updateAttriFrom.typeId=row.typeId;
                 this.updateFormFlag=true;
@@ -503,6 +568,8 @@
         },
         created() {
             this.queryAttribute(1);
+            //处理类型数据
+            this.formaterTypeData();
         }
     }
 </script>
