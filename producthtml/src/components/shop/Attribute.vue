@@ -109,7 +109,7 @@
 
 
 
-        <el-form :model="addAttriFrom" ref="addAttriFrom" label-width="80px">
+        <el-form :model="addAttriFrom" :rules="rules" ref="addAttriFrom" label-width="80px">
 
           <el-form-item label="分类">
             <el-select v-model="addAttriFrom.typeId" placeholder="请选择分类">
@@ -122,7 +122,7 @@
             <el-input v-model="addAttriFrom.name" autocomplete="off" ></el-input>
           </el-form-item>
 
-          <el-form-item label="中文名称" prop="name">
+          <el-form-item label="中文名称" prop="nameCH">
             <el-input v-model="addAttriFrom.nameCH" autocomplete="off" ></el-input>
           </el-form-item>
 
@@ -159,7 +159,7 @@
 
       <el-dialog title="修改属性信息" :visible.sync="updateFormFlag">
 
-        <el-form :model="updateAttriFrom" ref="addAttriFrom" label-width="80px">
+        <el-form :model="updateAttriFrom" ref="updateAttriFrom" :rules="rules" label-width="80px">
 
           <el-form-item label="分类">
             <el-select v-model="updateAttriFrom.typeId" placeholder="请选择分类">
@@ -172,7 +172,7 @@
             <el-input v-model="updateAttriFrom.name" autocomplete="off" ></el-input>
           </el-form-item>
 
-          <el-form-item label="中文名称" prop="name">
+          <el-form-item label="中文名称" prop="nameCH">
             <el-input v-model="updateAttriFrom.nameCH" autocomplete="off" ></el-input>
           </el-form-item>
 
@@ -208,14 +208,20 @@
 
 
       <!--  属性值的维护数据  -->
-
-
       <el-dialog title="属性值信息" :visible.sync="ShowValueTable">
         <el-button type="success" @click="addValue=true">新增</el-button>
         <el-table :data="attrValue">
+          <el-table-column property="id" label="序号" width="150"></el-table-column>
           <el-table-column property="name" label="属性" width="150"></el-table-column>
           <el-table-column property="nameCH" label="属性值" width="200"></el-table-column>
-
+          <el-table-column
+            prop="isDel"
+            label="是否显示"
+            width="130">
+            <template slot-scope="scope">
+              {{scope.row.isDel==0?"显示":scope.row.isDel==1?"不显示":"" }}
+            </template>
+          </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
               <el-button
@@ -228,13 +234,13 @@
 
       <el-dialog :title="valueTitle" :visible.sync="addValue">
 
-        <el-form :model="addAttValue" ref="addAttValue"  label-width="80px">
+        <el-form :model="addAttValue" :rules="valuerules" ref="addAttValue"  label-width="80px">
 
-          <el-form-item label="名称" prop="name">
+          <el-form-item label="属性值" prop="name">
             <el-input v-model="addAttValue.name" autocomplete="off" ></el-input>
           </el-form-item>
 
-          <el-form-item label="名称" prop="nameCH">
+          <el-form-item label="属性名称" prop="nameCH">
             <el-input v-model="addAttValue.nameCH" autocomplete="off" ></el-input>
           </el-form-item>
 
@@ -250,17 +256,22 @@
 
       <el-dialog :title="valueTitle" :visible.sync="updateValue">
 
-        <el-form :model="updateAttValue" ref="updateAttValue"  label-width="80px">
+        <el-form :model="updateAttValue" :rules="valuerules" ref="updateAttValue"  label-width="80px">
 
-          <el-form-item label="名称" prop="name">
+          <el-form-item label="属性值" prop="name">
             <el-input v-model="updateAttValue.name" autocomplete="off" ></el-input>
           </el-form-item>
 
-          <el-form-item label="名称" prop="nameCH">
+          <el-form-item label="属性名称" prop="nameCH">
             <el-input v-model="updateAttValue.nameCH" autocomplete="off" ></el-input>
           </el-form-item>
 
-
+          <el-form-item label="是否显示" prop="isDel">
+            <template>
+              <el-radio v-model="updateAttValue.isDel" :label="0">显示</el-radio>
+              <el-radio v-model="updateAttValue.isDel" :label="1">不显示</el-radio>
+            </template>
+          </el-form-item>
         </el-form>
 
         <div slot="footer" class="dialog-footer">
@@ -276,7 +287,40 @@
     export default {
         name: "Attribute",
         data() {
+            var checkname = (rule, value, callback) => {
+                if (!value) {
+                    return callback(new Error('属性名不能为空'));
+                }
+                if(/^[\u4e00-\u9fa5]+$/i.test(value)){
+                    callback();
+                }else{
+                    callback(new Error('只能输入中文'));
+                }
+            };
             return {
+                //正则验证
+                rules:{
+                    nameCH:[
+                        { required: true, message: '请输入属性值的名称', trigger: 'blur' },
+                        { max: 10, message: '长度不能超过 10 个字符', trigger: 'blur' },
+                    ],
+                    name:[
+                        { required: true, message: '请输入属性值', trigger: 'change' }
+                    ],
+                        },
+
+                valuerules:{
+                    nameCH: [
+                        { required: true, message: '请输入属性值的名称', trigger: 'blur' },
+                        { max: 10, message: '长度不能超过 10 个字符', trigger: 'blur' },
+                        { validator:checkname,trigger: 'blur' }
+                    ],
+                    name: [
+                        { required: true, message: '请输入属性值', trigger: 'change' }
+                    ]},
+
+
+                //属性查询
                 attribute:[],
                 param:{
                     size:4,
@@ -324,6 +368,7 @@
                     name:'',
                     nameCH:'',
                     attid:'',
+                    isDel:'',
                 },
                 updateValue:false,
                 updateAttValue:{
@@ -331,6 +376,7 @@
                     name:'',
                     nameCH:'',
                     attid:'',
+                    isDel:'',
                 },
             }
         },
@@ -369,6 +415,8 @@
                             this.addFormFlag=false;
                             this.queryAttribute(1);
                         }).catch(err=>console.log(err));
+                    }else{
+                        return false;
                     }
                 });
             },
@@ -384,11 +432,17 @@
 
             },
             updateForm:function(){
+                this.$refs["updateAttriFrom"].validate(res=>{
+                    if(res==true){
                 this.$ajax.post("http://localhost:8080/api/attribute/updateAttribute",this.$qs.stringify(this.updateAttriFrom)).then(res=>{
                     //关闭弹框
                     this.updateFormFlag=false;
                     this.queryAttribute(1);
                 }).catch(err=>console.log(err));
+                    }else{
+                        return false;
+                    }
+                })
             },
             attValue(row){
                 this.queryAttValue(row.id);
@@ -408,11 +462,17 @@
                 })
             },
             addAttFrom(){
-                this.$ajax.post("http://localhost:8080/api/value/add",this.$qs.stringify(this.addAttValue)).then(res=>{
-                    //关闭弹框
-                    this.addValue=false;
-                    this.queryAttValue(1);
-                }).catch(err=>console.log(err));
+                this.$refs['addAttValue'].validate(res=> {
+                    if(res==true){
+                    this.$ajax.post("http://localhost:8080/api/value/add", this.$qs.stringify(this.addAttValue)).then(res => {
+                        //关闭弹框
+                        this.addValue = false;
+                        this.queryAttValue(1);
+                    }).catch(err => console.log(err));
+                    }else{
+                        return false;
+                    }
+                })
             },
             huixian(index,row){
                 //关闭弹框
@@ -422,11 +482,17 @@
                 this.queryAttValue(1);
             },
             updateAttFrom(){
-                this.$ajax.post("http://localhost:8080/api/value/update",this.$qs.stringify(this.updateAttValue)).then(res=>{
-                    //关闭弹框
-                    this.updateValue=false;
-                    this.queryAttValue(1);
-                }).catch(err=>console.log(err));
+                this.$refs['updateAttValue'].validate(res=> {
+                    if (res == true) {
+                        this.$ajax.post("http://localhost:8080/api/value/update", this.$qs.stringify(this.updateAttValue)).then(res => {
+                            //关闭弹框
+                            this.updateValue = false;
+                            this.queryAttValue(1);
+                        }).catch(err => console.log(err));
+                    }else{
+                        return false;
+                    }
+                })
             }
 
         },

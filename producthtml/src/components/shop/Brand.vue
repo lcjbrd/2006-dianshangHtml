@@ -154,7 +154,7 @@
     <!--  修改的弹框   -->
     <el-dialog title="修改品牌信息" :visible.sync="updateFormFlag">
 
-      <el-form :model="updateForm" ref="addBrandFrom" :rules="rule"  label-width="80px">
+      <el-form :model="updateForm" ref="updateForm" :rules="rule"  label-width="80px">
 
         <el-form-item label="名称" prop="name">
           <el-input v-model="updateForm.name" autocomplete="off" ></el-input>
@@ -228,11 +228,10 @@
                     bandDesc:'',
                 },
                 rule:{ //验证规则
-                    brandname:[
+                    name:[
                         { required: true, message: '请输入名称', trigger: 'blur' },
-                        { min: 3, max: 15, message: '长度在 3 到 15 个字符', trigger: 'blur' }
+                        {max: 15, message: '长度不能大于 15 个字符', trigger: 'blur' }
                     ]
-
                 },
                 /*修改所需数据*/
                 updateForm:{
@@ -278,7 +277,6 @@
                 //取得验证结果
 
                 this.$refs['addBrandFrom'].validate(res=>{
-
                     if(res==true){
                         //提交表单
                         this.$ajax.post("http://localhost:8080/api/brand/add",this.$qs.stringify(this.addBrandFrom)).then(res=>{
@@ -286,6 +284,8 @@
                             this.addFormFlag=false;
                             this.queryBrand(1);
                         }).catch(err=>console.log(err));
+                    }else{
+                        return false;
                     }
                 });
             },
@@ -296,11 +296,18 @@
                 this.queryBrand(1);
             },
             updateBrandForm:function(){
+                this$refs['updateForm'].validate(res=>{
+                    if(res==ture){
                 this.$ajax.post("http://localhost:8080/api/brand/update",this.$qs.stringify(this.updateForm)).then(res=>{
                     //关闭弹框
                     this.updateFormFlag=false;
                     this.queryBrand(1);
                 }).catch(err=>console.log(err));
+                    }else{
+                        return false;
+                    }
+
+                })
             },
             handleDelete:function(index,row){
                 this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
@@ -310,6 +317,7 @@
                 }).then(() => {
                     this.$ajax.delete("http://localhost:8080/api/brand/del?cid="+row.cid).then(res=>this.queryBrand(1)
                     ).catch(err=>console.log(err));
+
                 });
             },
 
