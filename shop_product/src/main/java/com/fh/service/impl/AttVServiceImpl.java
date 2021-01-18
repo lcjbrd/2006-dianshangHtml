@@ -2,6 +2,7 @@ package com.fh.service.impl;
 
 import com.fh.mapper.AttVMapper;
 import com.fh.model.po.AttValue;
+import com.fh.model.po.ProductType;
 import com.fh.service.AttVService;
 import org.springframework.stereotype.Service;
 
@@ -32,5 +33,13 @@ public class AttVServiceImpl implements AttVService {
     @Override
     public void updateAttv(AttValue attValue) {
         vMapper.updateAttv(attValue);
+    }
+
+    @Override
+    public Map queryType() {
+        Map rs=new HashMap();
+        List<ProductType> list=vMapper.queryType();
+        rs.put("list",list);
+        return rs;
     }
 }

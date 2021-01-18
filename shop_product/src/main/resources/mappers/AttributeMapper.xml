@@ -11,7 +11,7 @@
         </if>
     </select>
     <select id="queryAttributeData" resultType="com.fh.model.po.Attribute"  parameterType="com.fh.model.vo.PinPaiData">
-          SELECT att.id,att.`name`,att.nameCH,t.`name` as typeName,att.isSKU,att.type,att.createDate,att.updateDate
+          SELECT att.id,att.`name`,att.nameCH,t.`name` as typeName,att.isSKU,att.type,att.createDate,att.updateDate,att.typeId
           from shop_shuxing att LEFT JOIN shop_type t on att.typeId=t.id
           where att.isDel=0
         <if test="name!=null and name!=''">

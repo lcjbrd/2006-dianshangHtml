@@ -1,7 +1,6 @@
 package com.fh.controller;
 
 import com.fh.model.po.AttValue;
-import com.fh.model.vo.AttValueVo;
 import com.fh.model.vo.ResultData;
 import com.fh.service.AttVService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +32,12 @@ public class AttVController {
     public ResultData updateAttv(AttValue attValue){
         vService.updateAttv(attValue);
         return ResultData.success("");
+    }
+
+    @GetMapping("type")
+    public ResultData queryType(){
+       Map list=  vService.queryType();
+       return ResultData.success(list);
     }
 
 }

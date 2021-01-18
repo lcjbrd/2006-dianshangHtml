@@ -1,8 +1,9 @@
 package com.fh.mapper;
 
 import com.fh.model.po.AttValue;
-import com.fh.model.vo.AttValueVo;
+import com.fh.model.po.ProductType;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -14,4 +15,8 @@ public interface AttVMapper {
     void addAttv(AttValue attValue);
 
     void updateAttv(AttValue attValue);
+    @Select("select * from shop_type where isDel=0")
+    List<ProductType> queryType();
+
+
 }

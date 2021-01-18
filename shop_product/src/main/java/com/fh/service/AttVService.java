@@ -10,4 +10,6 @@ public interface AttVService {
     void addAttv(AttValue attValue);
 
     void updateAttv(AttValue attValue);
+
+    Map queryType();
 }
