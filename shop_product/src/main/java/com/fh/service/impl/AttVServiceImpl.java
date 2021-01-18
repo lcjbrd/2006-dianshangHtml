@@ -2,7 +2,6 @@ package com.fh.service.impl;
 
 import com.fh.mapper.AttVMapper;
 import com.fh.model.po.AttValue;
-import com.fh.model.vo.AttValueVo;
 import com.fh.service.AttVService;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +16,10 @@ public class AttVServiceImpl implements AttVService {
     private AttVMapper vMapper;
 
     @Override
-    public Map queryAttV(AttValueVo vo) {
+    public Map queryAttV(Integer id) {
         Map rs=new HashMap();
-       Integer count= vMapper.queryCount(vo);
-         rs.put("count",count);
-        List<AttValue> list=vMapper.queryAttV(vo);
+
+        List<AttValue> list=vMapper.queryAttV(id);
         rs.put("list",list);
         return rs;
     }

@@ -17,14 +17,9 @@ public class AttVController {
     private AttVService vService;
 
     @GetMapping("getData")
-    public ResultData queryAttV(AttValueVo vo){
-        if (vo.getCurrPage()==null){
-            return ResultData.error(500,"参数错误");
-        }
-        if (vo.getSize()==null){
-            return ResultData.error(500,"参数错误");
-        }
-        Map list= vService.queryAttV(vo);
+    public ResultData queryAttV(Integer id){
+
+        Map list= vService.queryAttV(id);
         return ResultData.success(list);
     }
 

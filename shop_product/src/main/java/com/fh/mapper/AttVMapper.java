@@ -8,9 +8,8 @@ import java.util.List;
 
 @Mapper
 public interface AttVMapper {
-    Integer queryCount(AttValueVo vo);
 
-    List<AttValue> queryAttV(AttValueVo vo);
+    List<AttValue> queryAttV(Integer vo);
 
     void addAttv(AttValue attValue);
 

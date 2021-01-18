@@ -6,6 +6,8 @@ public class AttValueVo {
     private Integer size;
 
     private String name;
+    private Integer id;
+    private Integer attid;
 
 
     public Integer getCurrPage() {
@@ -30,5 +32,21 @@ public class AttValueVo {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getAttid() {
+        return attid;
+    }
+
+    public void setAttid(Integer attid) {
+        this.attid = attid;
     }
 }
