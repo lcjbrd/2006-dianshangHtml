@@ -47,4 +47,11 @@ public class AttributeServiceImpl implements AttributeService {
         attributeDao.deleteAttributeById(id);
     }
 
+    @Override
+    public List<Attribute> queryDataById(Integer typeId) {
+
+        return attributeDao.queryDataById(typeId);
+    }
+
+
 }

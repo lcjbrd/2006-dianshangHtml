@@ -75,5 +75,12 @@ post请求
 
 
 
+    @GetMapping("queryAttrDataById")
+    public ResultData queryDataById(Integer typeId){
+      return ResultData.success(attributeService.queryDataById(typeId));
+    }
+
+
+
 
 }

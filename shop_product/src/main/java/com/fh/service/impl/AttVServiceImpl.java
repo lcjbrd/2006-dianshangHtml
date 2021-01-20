@@ -42,4 +42,12 @@ public class AttVServiceImpl implements AttVService {
         rs.put("list",list);
         return rs;
     }
+
+    @Override
+    public List<AttValue> getAttvById(Integer id) {
+
+        return vMapper.getAttvById(id);
+    }
+
+
 }

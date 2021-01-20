@@ -18,5 +18,6 @@ public interface AttVMapper {
     @Select("select * from shop_type where isDel=0")
     List<ProductType> queryType();
 
-
+    @Select("select * from shop_attr_value where attid=#{id}")
+    List<AttValue> getAttvById(Integer id);
 }

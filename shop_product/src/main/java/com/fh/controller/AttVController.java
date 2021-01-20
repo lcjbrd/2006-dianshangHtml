@@ -40,4 +40,11 @@ public class AttVController {
        return ResultData.success(list);
     }
 
+
+    @GetMapping("getAttvById")
+    public ResultData getAttvById(Integer id){
+        return ResultData.success(vService.getAttvById(id));
+
+    }
+
 }

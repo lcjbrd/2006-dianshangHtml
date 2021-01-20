@@ -4,6 +4,7 @@ package com.fh.service;
 import com.fh.model.po.Attribute;
 import com.fh.model.vo.PinPaiData;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,4 +19,7 @@ public interface AttributeService {
     void updateAttribute(Attribute attribute);
 
     void deleteAttributeById(Integer id);
+
+    List<Attribute> queryDataById(Integer typeId);
 }
+

@@ -3,6 +3,7 @@ package com.fh.mapper;
 import com.fh.model.po.Attribute;
 import com.fh.model.vo.PinPaiData;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -21,4 +22,6 @@ public interface AttributeDao {
     void updateAttribute(Attribute attribute);
 
     void deleteAttributeById(Integer id);
+    @Select("select * from shop_shuxing where typeId=#{id}")
+    List<Attribute> queryDataById(Integer typeId);
 }
