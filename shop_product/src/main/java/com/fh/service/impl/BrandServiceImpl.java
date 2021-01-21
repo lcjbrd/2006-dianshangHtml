@@ -43,4 +43,10 @@ public class BrandServiceImpl implements BrandService {
         brand.setCreateDate(new Date());
         brandMapper.updateBrand(brand);
     }
+
+    @Override
+    public void delBrand(Integer id) {
+
+        brandMapper.delBrand(id);
+    }
 }

@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("api/brand")
+@RequestMapping("api/brand/")
 @CrossOrigin
 public class BrandController {
    @Autowired
     private BrandService brandService;
 
-    @GetMapping("getData")
+    @PostMapping("getData")
     public ResultData queryBrand(BrandVo vo){
         if (vo.getSize()==null){
             ResultData.error(400,"数据不合法");
@@ -43,6 +43,11 @@ public class BrandController {
     @PostMapping("update")
     public ResultData updateBrand(Brand brand){
         brandService.updateBrand(brand);
+       return   ResultData.success("");
+    }
+    @DeleteMapping("del")
+    public ResultData delBrand(Integer id){
+        brandService.delBrand(id);
        return   ResultData.success("");
     }
 

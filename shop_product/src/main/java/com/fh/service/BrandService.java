@@ -15,4 +15,5 @@ public interface BrandService {
     void updateBrand(Brand brand);
 
 
+    void delBrand(Integer id);
 }

@@ -28,7 +28,7 @@
       </select>
 
     <update id="updateBrand" parameterType="com.fh.model.po.ProductType">
-         update shop_brand set name=#{name},imgpath=#{imgpath},bandDesc=#{bandDesc},ord=#{ord},isDel=#{isDel},updateDate=#{updateDate},author=#{author},bandE={bandE} where id=#{id}
+         update shop_brand set name=#{name},imgpath=#{imgpath},bandDesc=#{bandDesc},ord=#{ord},isDel=#{isDel},updateDate=#{updateDate},author=#{author},bandE=#{bandE} where id=#{id}
     </update>
 
 
