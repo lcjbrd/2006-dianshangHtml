@@ -113,7 +113,7 @@
             query(){
                 var aa = this;
                 this.$ajax.get("http://localhost:8080/api/type/getData").then(function (res) {
-                    // console.log(res)
+                     console.log(res)
                     aa.data=res.data.data.typeList;
                 }).catch(function (res) {
                     alert("处理异常")

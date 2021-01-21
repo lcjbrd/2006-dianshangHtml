@@ -253,7 +253,7 @@
             },
             queryBrand(currPage){
                 var aa=this;
-                this.$ajax.get("http://localhost:8080/api/brand/getData?"+this.$qs.stringify(this.param)).then(function (res) {
+                this.$ajax.post("http://localhost:8080/api/brand/getData?"+this.$qs.stringify(this.param)).then(function (res) {
                     console.log(res)
                     /*获取数据*/
                     aa.brand=res.data.data.list;
@@ -296,8 +296,8 @@
                 this.queryBrand(1);
             },
             updateBrandForm:function(){
-                this$refs['updateForm'].validate(res=>{
-                    if(res==ture){
+                this.$refs['updateForm'].validate(res=>{
+                    if(res==true){
                 this.$ajax.post("http://localhost:8080/api/brand/update",this.$qs.stringify(this.updateForm)).then(res=>{
                     //关闭弹框
                     this.updateFormFlag=false;
@@ -315,7 +315,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$ajax.delete("http://localhost:8080/api/brand/del?cid="+row.cid).then(res=>this.queryBrand(1)
+                    this.$ajax.delete("http://localhost:8080/api/brand/del?id="+row.id).then(res=>this.queryBrand(1)
                     ).catch(err=>console.log(err));
 
                 });
