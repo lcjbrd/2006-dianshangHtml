@@ -68,13 +68,13 @@ export default {
                     subs: [
                         {
                             icon: 'el-icon-goods',
-                            index: 'product',
-                            title: '🪂商品列表'
+                            index: 'Product',
+                            title: '🌈商品列表'
                         },
                         {
                             icon: 'el-icon-edit-outline',
-                            index: 'productAdd',
-                            title: '🛸商品维护'
+                            index: 'Addproduct',
+                            title: '🌠新增商品'
                         },
                         {
                             icon: 'el-icon-price-tag',
@@ -88,14 +88,14 @@ export default {
                         },
                         {
                             icon: 'el-icon-notebook-2',
-                            index: 'ProductAttr',
-                            title: '⚓商品类型'
+                            index: 'attribute',
+                            title: '💸商品属性'
                         },
                         {
                             icon: 'el-icon-notebook-2',
-                            index: 'attribute',
-                            title: '💸商品属性'
-                        }
+                            index: 'Test',
+                            title: '🏄‍♀️测试'
+                        },
                     ]
 
                 },

@@ -5,6 +5,9 @@ import Home from '@/components/common/Home'
 import dashboard from '@/components/shop/Dashboard'
 import brand from '@/components/shop/Brand'
 import attribute from '@/components/shop/Attribute'
+import Addproduct from '@/components/shop/Addproduct'
+import Test from '@/components/shop/Test'
+import Product from '@/components/shop/Product'
 
 Vue.use(Router)
 
@@ -43,6 +46,25 @@ export default new Router({
           name: "attribute",
           meta: { title: '商品属性' }
         },
+        {
+          path: '/Addproduct',
+          component: Addproduct,
+          name: "Addproduct",
+          meta: { title: '商品新增' }
+        },
+        {
+          path: '/Product',
+          component: Product,
+          name: "Product",
+          meta: { title: '商品列表' }
+        },
+        {
+          path: '/Test',
+          component: Test,
+          name: "Test",
+          meta: { title: '测试' }
+        },
+
       ]
     },
   ]

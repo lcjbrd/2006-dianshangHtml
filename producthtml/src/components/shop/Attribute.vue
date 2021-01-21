@@ -244,6 +244,10 @@
             <el-input v-model="addAttValue.nameCH" autocomplete="off" ></el-input>
           </el-form-item>
 
+          <el-form-item label="属性名称" prop="attid">
+            <el-input v-model="addAttValue.attid" autocomplete="off" ></el-input>
+          </el-form-item>
+
         </el-form>
 
         <div slot="footer" class="dialog-footer">
@@ -313,7 +317,7 @@
                     nameCH: [
                         { required: true, message: '请输入属性值的名称', trigger: 'blur' },
                         { max: 10, message: '长度不能超过 10 个字符', trigger: 'blur' },
-                        { validator:checkname,trigger: 'blur' }
+                        /*{ validator:checkname,trigger: 'blur' }*/
                     ],
                     name: [
                         { required: true, message: '请输入属性值', trigger: 'change' }
@@ -371,7 +375,6 @@
                     name:'',
                     nameCH:'',
                     attid:'',
-                    isDel:'',
                 },
                 updateValue:false,
                 updateAttValue:{
@@ -521,18 +524,21 @@
                     console.log(res)
                     /*获取数据*/
                     aa.attrValue=res.data.data.list;
+
                     /*获取总数据*/
                 }).catch(function (res) {
                     alert("处理异常")
                 })
             },
             addAttFrom(){
-                this.$refs['addAttValue'].validate(res=> {
-                    if(res==true){
+                this.$refs['addAttValue'].validate(va=> {
+
+                    if(va==true){
                     this.$ajax.post("http://localhost:8080/api/value/add", this.$qs.stringify(this.addAttValue)).then(res => {
                         //关闭弹框
+                        console.log(res)
                         this.addValue = false;
-                        this.queryAttValue(1);
+                        this.queryAttValue(this.addAttValue.attid);
                     }).catch(err => console.log(err));
                     }else{
                         return false;
@@ -547,12 +553,12 @@
                 this.queryAttValue(1);
             },
             updateAttFrom(){
-                this.$refs['updateAttValue'].validate(res=> {
-                    if (res == true) {
+                this.$refs['updateAttValue'].validate(va=> {
+                    if (va == true) {
                         this.$ajax.post("http://localhost:8080/api/value/update", this.$qs.stringify(this.updateAttValue)).then(res => {
                             //关闭弹框
                             this.updateValue = false;
-                            this.queryAttValue(1);
+                            this.queryAttValue(this.updateAttValue.attid);
                         }).catch(err => console.log(err));
                     }else{
                         return false;
